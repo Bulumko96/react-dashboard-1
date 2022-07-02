@@ -5,54 +5,61 @@ import { MdOutlineCancel } from 'react-icon/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { links } from '../data/dummy';
 
-
+import { useStateContext } from '../contexts/ContextProvider';
 
 const Sidebar = () => {
-const activeMenu = true;
-const activeLink = 'flex items-centre gap-5 p1 pt-3 pb-2.5 rounded-1g text-white text-md m-2';
-const normalLink = 'flex items-centre gap-5 p1 pt-3 pb-2.5 rounded-1g text-gray-700 text-md dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2';
-  return (
-    <div className='ml-3 h-screen md:overflow-hidden overflow-auto
-    md:hover:overflow-auto pb-10'>
-      {activeMenu && (<>
-      <div className='flex justify-between items-center gap-3 ml-3
-      mt-4 flex text-xl font-extrabold tracking-tight dark:text-white 
-      text-slate-900'>
-        <Link to='/' onClick={() => {}}
-        className='items-center'>
-          <SiShopware />
-            <span>Shoppy</span>
-        </Link>
-        <TooltipComponent content='Menu' position='BottomCenter'>
-          <button type='button' onClick={() => {}} className='text-x1
-          rounded-full p-3 hover:bg-light-gray mt-4 block md-hidden'>
-            <MdOutlineCancel />
-          </button>
-        </TooltipComponent>
-      </div>
-      <div className='mt-10'>
-        {links.map((item) => (
-          <div key={item.title}>
-            <p  className='text-gray-400 m-3 mt-4 uppercase'>
-              {item.title}
-            </p>
-            {item.links.map((link) => (
-              <NavLink to={`/${Link.name}`} key={Link.name}
-              onClick={() => {}} className={({ isActive }) => isActive ? activeLink : normalLink}>
-                {link.icon}
-                <span className='capitalize'>
-                  {link.name}
-                </span>
+  const { activeMenu, setActiveMenu, screenSize } = useStateContext();
+  const handleCloseSideBar = () => {
+    if(activeMenu && screenSize <= 900) {
+      setActiveMenu(false)
+    }
+  }
 
-              </NavLink>
-            ))}
-          </div>
-        ))}
+
+  const activeLink = 'flex items-centre gap-5 p1 pt-3 pb-2.5 rounded-1g text-white text-md m-2';
+  const normalLink = 'flex items-centre gap-5 p1 pt-3 pb-2.5 rounded-1g text-gray-700 text-md dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2';
+    return (
+      <div className='ml-3 h-screen md:overflow-hidden overflow-auto
+      md:hover:overflow-auto pb-10'>
+        {activeMenu && (<>
+        <div className='flex justify-between items-center gap-3 ml-3
+        mt-4 flex text-xl font-extrabold tracking-tight dark:text-white 
+        text-slate-900'>
+          <Link to='/' onClick={handleCloseSideBar}
+          className='items-center'>
+            <SiShopware />
+              <span>Shoppy</span>
+          </Link>
+          <TooltipComponent content='Menu' position='BottomCenter'>
+            <button type='button' onClick={() => setActiveMenu((preActiveMenu) => !preActiveMenu)} className='text-x1
+            rounded-full p-3 hover:bg-light-gray mt-4 block md-hidden'>
+              <MdOutlineCancel />
+            </button>
+          </TooltipComponent>
+        </div>
+        <div className='mt-10'>
+          {links.map((item) => (
+            <div key={item.title}>
+              <p  className='text-gray-400 m-3 mt-4 uppercase'>
+                {item.title}
+              </p>
+              {item.links.map((link) => (
+                <NavLink to={`/${Link.name}`} key={Link.name}
+                onClick={handleCloseSideBar} className={({ isActive }) => isActive ? activeLink : normalLink}>
+                  {link.icon}
+                  <span className='capitalize'>
+                    {link.name}
+                  </span>
+
+                </NavLink>
+              ))}
+            </div>
+          ))}
+        </div>
+        </>)    
+        }
       </div>
-      </>)    
-      }
-    </div>
-  )
+    )
 }
 
 export default Sidebar
