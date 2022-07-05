@@ -8,7 +8,7 @@ import { links } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 
 const Sidebar = () => {
-  const { activeMenu, setActiveMenu, screenSize } = useStateContext();
+  const { activeMenu, setActiveMenu, screenSize, currenColor } = useStateContext();
   const handleCloseSideBar = () => {
     if(activeMenu && screenSize <= 900) {
       setActiveMenu(false)
@@ -31,7 +31,7 @@ const Sidebar = () => {
               <span>Shoppy</span>
           </Link>
           <TooltipComponent content='Menu' position='BottomCenter'>
-            <button type='button' onClick={() => setActiveMenu((preActiveMenu) => !preActiveMenu)} className='text-x1
+            <button type='button' onClick={() => setActiveMenu((preActiveMenu) => !preActiveMenu)} className='text-xl
             rounded-full p-3 hover:bg-light-gray mt-4 block md-hidden'>
               <MdOutlineCancel />
             </button>
@@ -45,7 +45,10 @@ const Sidebar = () => {
               </p>
               {item.links.map((link) => (
                 <NavLink to={`/${Link.name}`} key={Link.name}
-                onClick={handleCloseSideBar} className={({ isActive }) => isActive ? activeLink : normalLink}>
+                onClick={handleCloseSideBar} 
+                style={({ isActive }) => ({ backgroundColor: isActive ? currenColor: ''})}
+
+                className={({ isActive }) => isActive ? activeLink : normalLink}>
                   {link.icon}
                   <span className='capitalize'>
                     {link.name}
